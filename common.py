@@ -1,15 +1,33 @@
-from pathlib import Path
-
-from ruamel.yaml import YAML
-
-_yaml = YAML(typ='safe')
-_yaml.default_flow_style = False
-_out = Path('config') / 'flair-bot.yml'
+import logging
+import os
+import os.path
 
 
-def write_config(cfg):
-    _yaml.dump(cfg, _out)
+def setup_logging():
+    global logger
+    logger = logging.getLogger()
+    logger.setLevel(logging.DEBUG)
+
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+
+    if not os.path.exists('logs'):
+        os.mkdir('logs')
+
+    filename = os.path.basename(__file__)
+    basename = os.path.splitext(filename)[0]
+
+    fh = logging.handlers.TimedRotatingFileHandler(f'logs/{filename}.log', when='W0')
+    fh.setLevel(logging.INFO)
+    fh.setFormatter(formatter)
+    logger.addHandler(fh)
+
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.DEBUG)
+    ch.setFormatter(formatter)
+    logger.addHandler(ch)
 
 
-def read_config():
-    return _yaml.load(_out)
+def change_to_local_dir():
+    abspath = os.path.abspath(__file__)
+    dname = os.path.dirname(abspath)
+    os.chdir(dname)
