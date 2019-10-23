@@ -46,7 +46,7 @@ def setup_logging(extra_name=None, disable_tty=False):
 
 
 def change_to_local_dir():
-    abspath = os.path.abspath(__file__)
+    abspath = os.path.abspath(sys.argv[0])
     dname = os.path.dirname(abspath)
     os.chdir(dname)
 
