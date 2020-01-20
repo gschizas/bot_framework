@@ -1,9 +1,8 @@
 import collections
 
-import ruamel.yaml as _yaml
+from ruamel.yaml import YAML
 
 __all__ = ['yaml']
-
 
 def dict_representer(dumper, data):
     return dumper.represent_dict(data.iteritems())
@@ -29,6 +28,7 @@ def carry_over_compose_document(self):
     return node
 
 
+_yaml = YAML(typ='safe')
 _yaml.add_constructor(_yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, dict_constructor)
 _yaml.add_representer(collections.OrderedDict, dict_representer)
 _yaml.add_representer(str, literal_str_representer)
