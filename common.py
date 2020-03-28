@@ -5,7 +5,8 @@ import os.path
 import sys
 
 import colorlog
-import requests
+
+from bot_framework.slack import SlackWrapper
 
 
 def setup_logging(extra_name=None, disable_tty=False):
@@ -16,7 +17,6 @@ def setup_logging(extra_name=None, disable_tty=False):
         extra_name = '-' + extra_name
     else:
         extra_name = ''
-
 
     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 
@@ -52,18 +52,8 @@ def change_to_local_dir():
 
 
 def send_to_slack(url, channel, title, main_text, color, username, emoji, logger):
-    payload = {
-        'channel': channel,
-        'username': username,
-        'color': color,
-        'unfurl_links': True,
-        'pretext': title,
-        'icon_emoji': emoji,
-        'text': main_text
-    }
-    doit = requests.post(url, json=payload)
-    logger.debug(doit)
-    logger.debug(doit.text)
+    _slack = SlackWrapper(url, channel, color, username, emoji, logger)
+    _slack.send_text(title, main_text)
 
 
 def normalize_text(input_text):
