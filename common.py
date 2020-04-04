@@ -56,22 +56,12 @@ def send_to_slack(url, channel, title, main_text, color, username, emoji, logger
     _slack.send_text(title, main_text)
 
 
-def normalize_text(input_text):
+def _confusables():
     import pathlib
-    import unicodedata
-    import re
-    from ftplib import FTP
 
     if not pathlib.Path('confusables.txt').exists():
-        ftp = FTP('ftp.unicode.org')
-        ftp.login()
-        ftp.cwd('Public/security/latest')
-        with open('confusables.txt', 'wb') as fp:
-            ftp.retrbinary('RETR confusables.txt', fp.write)
-        ftp.quit()
-
+        _download_confusables()
     trans_table = {}
-
     with open('confusables.txt', encoding='utf8') as fp:
         c = 0
         for line in fp.readlines():
@@ -82,8 +72,25 @@ def normalize_text(input_text):
             assert convertion_type.strip() == 'MA', repr(convertion_type.strip())
             to_chars = to_chars_raw.strip().split()
             trans_table[int(from_char, 16)] = ''.join([chr(int(c, 16)) for c in to_chars])
-
     tr = str.maketrans(trans_table)
+    return tr
+
+
+def _download_confusables():
+    from ftplib import FTP
+    ftp = FTP('ftp.unicode.org')
+    ftp.login()
+    ftp.cwd('Public/security/latest')
+    with open('confusables.txt', 'wb') as fp:
+        ftp.retrbinary('RETR confusables.txt', fp.write)
+    ftp.quit()
+
+
+def normalize_text(input_text):
+    import unicodedata
+    import re
+
+    tr = _confusables()
 
     result = unicodedata.normalize('NFKD', input_text)
     result = re.sub(r'[\u0300-\u0380]', '', result)
