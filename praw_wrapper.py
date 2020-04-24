@@ -9,7 +9,13 @@ DEFAULT_CLIENT_ID = os.environ.get('REDDIT_CLIENT_ID')
 DEFAULT_CLIENT_SECRET = os.environ.get('REDDIT_CLIENT_SECRET')
 
 
-def praw_wrapper(config=None, user_agent=None, client_id=None, client_secret=None, redirect_url=None, scopes=None):
+def praw_wrapper(config=None,
+                 user_agent=None,
+                 client_id=None,
+                 client_secret=None,
+                 redirect_url=None,
+                 scopes=None,
+                 prompt=None):
     if config:
         user_agent = config['main'].get('user_agent')
         client_id = config['main'].get('client_id')
@@ -54,7 +60,7 @@ def praw_wrapper(config=None, user_agent=None, client_id=None, client_secret=Non
             redirect_uri=redirect_url,
             user_agent=user_agent)
         state = uuid.uuid4().hex
-        print('Visit the following URL:', praw_instance.auth.url(scopes, state))
+        print(prompt or 'Visit the following URL:', praw_instance.auth.url(scopes, state))
         url = input('Result URL: ')
         query = parse_qs(urlparse(url).query)
         assert state == query['state'][0]
