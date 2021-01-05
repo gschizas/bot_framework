@@ -23,16 +23,11 @@ def praw_wrapper(config=None,
         redirect_url = config['main'].get('redirect_url')
         scopes = config['main'].get('scopes')
 
-    if not user_agent:
-        user_agent = 'python:gr.terrasoft.reddit.scratch:v' + datetime.date.today().isoformat() + ' (by /u/gschizas)'
-    if not client_id:
-        client_id = DEFAULT_CLIENT_ID
-    if not client_secret:
-        client_secret = DEFAULT_CLIENT_SECRET
-    if not redirect_url:
-        redirect_url = 'https://example.com/authorize_callback'
-    if not scopes:
-        scopes = ['*']
+    user_agent = user_agent or 'python:gr.terrasoft.reddit.scratch:v' + datetime.date.today().isoformat() + ' (by /u/gschizas)'
+    client_id = client_id or DEFAULT_CLIENT_ID
+    client_secret = client_secret or DEFAULT_CLIENT_SECRET
+    redirect_url = redirect_url or 'https://example.com/authorize_callback'
+    scopes = scopes or ['*']
 
     user_agent_key = user_agent.split(':')[1]
 
