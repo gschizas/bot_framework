@@ -96,3 +96,11 @@ def normalize_text(input_text):
     result = re.sub(r'[\u0300-\u0380]', '', result)
     result = result.translate(tr)
     return result
+
+
+class CaseInsensitiveDict(dict):
+    def __setitem__(self, key, value):
+        super().__setitem__(key.lower(), value)
+
+    def __getitem__(self, key):
+        return super().__getitem__(key.lower())
