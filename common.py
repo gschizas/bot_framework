@@ -89,8 +89,10 @@ def _download_confusables():
 def normalize_text(input_text):
     import unicodedata
     import re
+    if len(input_text) == 1: return input_text
 
     tr = _confusables()
+    tr = dict(filter(lambda x: x[0] > 128, tr.items()))  # remove all ASCII from confusables. sheesh!
 
     result = unicodedata.normalize('NFKD', input_text)
     result = re.sub(r'[\u0300-\u0380]', '', result)
