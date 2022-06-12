@@ -16,7 +16,8 @@ def praw_wrapper(config=None,
                  client_secret=None,
                  redirect_url=None,
                  scopes=None,
-                 prompt=None):
+                 prompt=None,
+                 requestor_class=None):
 
     if config:
         user_agent = config['main'].get('user_agent')
@@ -50,7 +51,8 @@ def praw_wrapper(config=None,
             client_id=client_id,
             client_secret=client_secret,
             refresh_token=refresh_token,
-            user_agent=user_agent)
+            user_agent=user_agent,
+            requestor_class=requestor_class)
     else:
         import sys
         sys.stdout = sys.__stdout__
@@ -60,7 +62,8 @@ def praw_wrapper(config=None,
             client_id=client_id,
             client_secret=client_secret,
             redirect_uri=redirect_url,
-            user_agent=user_agent)
+            user_agent=user_agent,
+            requestor_class=requestor_class)
         state = uuid.uuid4().hex
         print(prompt or 'Visit the following URL:', praw_instance.auth.url(scopes, state))
         url = input('Result URL: ')
