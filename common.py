@@ -51,9 +51,9 @@ def change_to_local_dir():
     os.chdir(dname)
 
 
-def send_to_slack(url, channel, title, main_text, color, username, emoji, logger):
+def send_to_slack(url:str, channel:str, title:str=None, main_text:str=None, color:str=None, username:str=None, emoji:str=None, logger=None, blocks:list=None):
     _slack = SlackWrapper(url, channel, color, username, emoji, logger)
-    _slack.send_text(title, main_text)
+    _slack.send_text(title, main_text, blocks=blocks)
 
 
 def _confusables():

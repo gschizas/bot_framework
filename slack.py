@@ -10,7 +10,7 @@ class SlackWrapper:
         self.emoji = emoji
         self.logger = logger
 
-    def send_text(self, title, main_text, color=None, emoji=None, channel=None):
+    def send_text(self, title, main_text, blocks=None, color=None, emoji=None, channel=None):
         payload = {
             'channel': channel or self.channel,
             'username': self.username,
@@ -20,6 +20,9 @@ class SlackWrapper:
             'icon_emoji': emoji or self.emoji,
             'text': main_text
         }
+        if blocks:
+            payload.pop('text')
+            payload['blocks'] = blocks
         doit = requests.post(self.url, json=payload)
         self.logger.debug(doit)
         self.logger.debug(doit.text)
