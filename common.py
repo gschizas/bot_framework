@@ -32,12 +32,14 @@ def setup_logging(extra_name=None, disable_tty=False):
         ch.setFormatter(colorlog.ColoredFormatter('%(log_color)s%(levelname)s\t%(name)s\t%(message)s'))
         logger.addHandler(ch)
 
-    fh = logging.handlers.TimedRotatingFileHandler(f'logs/{basename}{extra_name}.log', when='W0')
+    fh = logging.handlers.TimedRotatingFileHandler(f'logs/{basename}{extra_name}.log',
+                                                   when='W0', encoding='utf-8')
     fh.setLevel(logging.INFO)
     fh.setFormatter(formatter)
     logger.addHandler(fh)
 
-    fh2 = logging.handlers.TimedRotatingFileHandler(f'logs/{basename}{extra_name}.debug.log', when='W0')
+    fh2 = logging.handlers.TimedRotatingFileHandler(f'logs/{basename}{extra_name}.debug.log',
+                                                    when='W0', encoding='utf-8')
     fh2.setLevel(logging.DEBUG)
     fh2.setFormatter(formatter)
     logger.addHandler(fh2)
@@ -98,4 +100,3 @@ def normalize_text(input_text):
     result = re.sub(r'[\u0300-\u0380]', '', result)
     result = result.translate(tr)
     return result
-

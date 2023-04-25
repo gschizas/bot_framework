@@ -2,6 +2,7 @@ import datetime
 import os
 import uuid
 from urllib.parse import urlparse, parse_qs
+import logging
 
 import praw
 
@@ -15,13 +16,16 @@ def praw_wrapper(config=None,
                  client_secret=None,
                  redirect_url=None,
                  scopes=None,
-                 prompt=None):
+                 prompt=None,
+                 requestor_class=None):
+
     if config:
         user_agent = config['main'].get('user_agent')
         client_id = config['main'].get('client_id')
         client_secret = config['main'].get('client_secret')
         redirect_url = config['main'].get('redirect_url')
         scopes = config['main'].get('scopes')
+
 
     user_agent = user_agent or 'python:gr.terrasoft.reddit.scratch:v' + datetime.date.today().isoformat() + ' (by /u/gschizas)'
     client_id = client_id or DEFAULT_CLIENT_ID
@@ -47,13 +51,19 @@ def praw_wrapper(config=None,
             client_id=client_id,
             client_secret=client_secret,
             refresh_token=refresh_token,
-            user_agent=user_agent)
+            user_agent=user_agent,
+            requestor_class=requestor_class)
     else:
+        import sys
+        sys.stdout = sys.__stdout__
+        sys.stderr = sys.__stderr__
+        
         praw_instance = praw.Reddit(
             client_id=client_id,
             client_secret=client_secret,
             redirect_uri=redirect_url,
-            user_agent=user_agent)
+            user_agent=user_agent,
+            requestor_class=requestor_class)
         state = uuid.uuid4().hex
         print(prompt or 'Visit the following URL:', praw_instance.auth.url(scopes, state))
         url = input('Result URL: ')
