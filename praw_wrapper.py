@@ -54,6 +54,7 @@ def praw_wrapper(config=None,
             user_agent=user_agent,
             requestor_class=requestor_class)
     else:
+        print("No refresh token found. Please visit the following URL to obtain one.")
         import sys
         sys.stdout = sys.__stdout__
         sys.stderr = sys.__stderr__
@@ -65,8 +66,8 @@ def praw_wrapper(config=None,
             user_agent=user_agent,
             requestor_class=requestor_class)
         state = uuid.uuid4().hex
-        print(prompt or 'Visit the following URL:', praw_instance.auth.url(scopes, state))
-        url = input('Result URL: ')
+        print(prompt or "Visit the following URL:", praw_instance.auth.url(scopes, state))
+        url = input("Result URL: ")
         query = parse_qs(urlparse(url).query)
         assert state == query['state'][0]
         code = query['code'][0]
