@@ -55,10 +55,7 @@ def praw_wrapper(config=None,
             requestor_class=requestor_class)
     else:
         print("No refresh token found. Please visit the following URL to obtain one.")
-        import sys
-        sys.stdout = sys.__stdout__
-        sys.stderr = sys.__stderr__
-        
+
         praw_instance = praw.Reddit(
             client_id=client_id,
             client_secret=client_secret,
