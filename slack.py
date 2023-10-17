@@ -26,3 +26,4 @@ class SlackWrapper:
         doit = requests.post(self.url, json=payload)
         self.logger.debug(doit)
         self.logger.debug(doit.text)
+        assert doit.ok
