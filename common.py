@@ -13,10 +13,7 @@ def setup_logging(extra_name=None, disable_tty=False):
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
 
-    if extra_name:
-        extra_name = '-' + extra_name
-    else:
-        extra_name = ''
+    extra_name = '-' + extra_name if extra_name else ''
 
     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 
