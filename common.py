@@ -9,7 +9,7 @@ import colorlog
 from bot_framework.slack import SlackWrapper
 
 
-def setup_logging(extra_name: str = None, disable_tty: bool = False):
+def setup_logging(extra_name: str = None, disable_tty: bool = False, when: str = None):
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
 
@@ -30,13 +30,13 @@ def setup_logging(extra_name: str = None, disable_tty: bool = False):
         logger.addHandler(ch)
 
     fh = logging.handlers.TimedRotatingFileHandler(f'logs/{basename}{extra_name}.log',
-                                                   when='W0', encoding='utf-8')
+                                                   when=when or 'W0', encoding='utf-8')
     fh.setLevel(logging.INFO)
     fh.setFormatter(formatter)
     logger.addHandler(fh)
 
     fh2 = logging.handlers.TimedRotatingFileHandler(f'logs/{basename}{extra_name}.debug.log',
-                                                    when='W0', encoding='utf-8')
+                                                    when=when or 'W0', encoding='utf-8')
     fh2.setLevel(logging.DEBUG)
     fh2.setFormatter(formatter)
     logger.addHandler(fh2)
