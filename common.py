@@ -9,7 +9,7 @@ import colorlog
 from bot_framework.slack import SlackWrapper
 
 
-def setup_logging(extra_name=None, disable_tty=False):
+def setup_logging(extra_name: str = None, disable_tty: bool = False):
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
 
@@ -50,7 +50,8 @@ def change_to_local_dir():
     os.chdir(dname)
 
 
-def send_to_slack(url:str, channel:str, title:str=None, main_text:str=None, color:str=None, username:str=None, emoji:str=None, logger=None, blocks:list=None):
+def send_to_slack(url: str, channel: str, title: str = None, main_text: str = None, color: str = None,
+                  username: str = None, emoji: str = None, logger=None, blocks: list = None):
     _slack = SlackWrapper(url, channel, color, username, emoji, logger)
     _slack.send_text(title, main_text, blocks=blocks)
 
