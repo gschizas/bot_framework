@@ -4,6 +4,7 @@ from ruamel.yaml import YAML
 
 __all__ = ['yaml']
 
+
 def dict_representer(dumper, data):
     return dumper.represent_dict(data.iteritems())
 

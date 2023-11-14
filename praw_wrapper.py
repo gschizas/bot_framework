@@ -2,7 +2,6 @@ import datetime
 import os
 import uuid
 from urllib.parse import urlparse, parse_qs
-import logging
 
 import praw
 
@@ -26,8 +25,8 @@ def praw_wrapper(config=None,
         redirect_url = config['main'].get('redirect_url')
         scopes = config['main'].get('scopes')
 
-
-    user_agent = user_agent or 'python:gr.terrasoft.reddit.scratch:v' + datetime.date.today().isoformat() + ' (by /u/gschizas)'
+    iso_date = datetime.date.today().isoformat()
+    user_agent = user_agent or f'python:gr.terrasoft.reddit.scratch:v{iso_date} (by /u/gschizas)'
     client_id = client_id or DEFAULT_CLIENT_ID
     client_secret = client_secret or DEFAULT_CLIENT_SECRET
     redirect_url = redirect_url or 'https://example.com/authorize_callback'
