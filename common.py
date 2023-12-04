@@ -12,6 +12,11 @@ from bot_framework.slack import SlackWrapper
 def setup_logging(extra_name: str = None, disable_tty: bool = False, when: str = None):
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
+    for key, value in os.environ.items():
+        if key.upper().startswith('LOGGING.'):
+            logger_name = key[8:].lower()
+            logger_value = logging.getLevelName(value)
+            logging.getLogger(logger_name).setLevel(logger_value)
 
     extra_name = '-' + extra_name if extra_name else ''
 
