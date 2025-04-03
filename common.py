@@ -20,7 +20,7 @@ def setup_logging(extra_name: str = None, disable_tty: bool = False, when: str =
 
     extra_name = '-' + extra_name if extra_name else ''
 
-    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(filename)s:%(funcName)s:%(lineno)s %(message)s')
 
     if not os.path.exists('logs'):
         os.mkdir('logs')
